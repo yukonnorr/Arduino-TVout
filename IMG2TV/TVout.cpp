@@ -499,10 +499,27 @@ void TVout::draw_column(uint8_t row, uint16_t y0, uint16_t y1, uint8_t c) {
 */
 void TVout::draw_rect(uint8_t x0, uint8_t y0, uint8_t w, uint8_t h, char c, char fc) {
 	
-	if (fc != -1) {
+	if (fc == 0 || fc == 1 || fc == 2) {      //Standard Fill Colors
 		for (unsigned char i = y0; i < y0+h; i++)
 			draw_row(i,x0,x0+w,fc);
 	}
+	
+	if (fc == -2) {				 //FUZZ Fill Color
+		for (unsigned char i = y0; i < y0+h; i++)
+		        uint8_t xrand = random(x0,x0+w); 
+       			TV.set_pixel(xrand,i,WHITE);
+       			xrand = random(xrow0,xrow1);
+       			TV.set_pixel(xrand,i,WHITE);
+       			xrand = random(xrow0,xrow1);
+        		V.set_pixel(xrand,i,WHITE);
+	}
+	
+	if (fc == -3) {				 //LINES Fill Color
+		for (unsigned char i = y0; i < y0+h; i++)
+		        if ((i%3)==0) {TV.draw_row(i,x0,x0+w,fc);}  
+	}
+	
+	
 	draw_line(x0,y0,x0+w,y0,c);
 	draw_line(x0,y0,x0,y0+h,c);
 	draw_line(x0+w,y0,x0+w,y0+h,c);
